@@ -1,0 +1,339 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>桐柏红叶旅游开发有限公司</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="js/jqFancyTransitions.1.8.min.js"></script>
+<script type="text/javascript" src="js/bsn.js"></script>
+</head>
+
+<body>
+<div class="top">
+  <div class="top_wz"><span><a href="#">设为首页</a>丨<a href="#">加入收藏</a></span>您好，欢迎来到红叶旅游！今天是<script>  
+  var   CalendarData=new   Array(20);  
+  var   madd=new   Array(12);  
+  var   TheDate=new   Date();  
+  var   tgString="甲乙丙丁戊己庚辛壬癸";  
+  var   dzString="子丑寅卯辰巳午未申酉戌亥";  
+  var   numString="一二三四五六七八九十";  
+  var   monString="正二三四五六七八九十冬腊";  
+  var   weekString="日一二三四五六";  
+  var   sx="鼠牛虎兔龙蛇马羊猴鸡狗猪";  
+  var   cYear;  
+  var   cMonth;  
+  var   cDay;  
+  var   cHour;  
+  var   cDateString;  
+  var   DateString;  
+  var   Browser=navigator.appName;  
+   
+  function   init()  
+  {    
+      CalendarData[0]=0x41A95;  
+      CalendarData[1]=0xD4A;  
+      CalendarData[2]=0xDA5;  
+      CalendarData[3]=0x20B55;  
+      CalendarData[4]=0x56A;  
+      CalendarData[5]=0x7155B;  
+      CalendarData[6]=0x25D;  
+      CalendarData[7]=0x92D;  
+      CalendarData[8]=0x5192B;  
+      CalendarData[9]=0xA95;  
+      CalendarData[10]=0xB4A;  
+      CalendarData[11]=0x416AA;  
+      CalendarData[12]=0xAD5;  
+      CalendarData[13]=0x90AB5;  
+      CalendarData[14]=0x4BA;  
+      CalendarData[15]=0xA5B;  
+      CalendarData[16]=0x60A57;  
+      CalendarData[17]=0x52B;  
+      CalendarData[18]=0xA93;  
+      CalendarData[19]=0x40E95;  
+      madd[0]=0;  
+      madd[1]=31;  
+      madd[2]=59;  
+      madd[3]=90;  
+      madd[4]=120;  
+      madd[5]=151;  
+      madd[6]=181;  
+      madd[7]=212;  
+      madd[8]=243;  
+      madd[9]=273;  
+      madd[10]=304;  
+      madd[11]=334;  
+    }  
+   
+  function   GetBit(m,n)  
+  {    
+        return   (m>>n)&1;  
+  }  
+   
+  function   e2c()  
+  {      
+      var   total,m,n,k;  
+      var   isEnd=false;  
+      var   tmp=TheDate.getYear();  
+      if   (tmp<1900)     tmp+=1900;  
+      total=(tmp-2001)*365  
+          +Math.floor((tmp-2001)/4)  
+          +madd[TheDate.getMonth()]  
+          +TheDate.getDate()  
+          -23;  
+      if   (TheDate.getYear()%4==0&&TheDate.getMonth()>1)  
+          total++;  
+      for(m=0;;m++)  
+      {      
+          k=(CalendarData[m]<0xfff)?11:12;  
+          for(n=k;n>=0;n--)  
+          {  
+              if(total<=29+GetBit(CalendarData[m],n))  
+              {    
+                  isEnd=true;  
+                  break;  
+              }  
+              total=total-29-GetBit(CalendarData[m],n);  
+          }  
+          if(isEnd)break;  
+      }  
+      cYear=2001   +   m;  
+      cMonth=k-n+1;  
+      cDay=total;  
+      if(k==12)  
+      {  
+          if(cMonth==Math.floor(CalendarData[m]/0x10000)+1)  
+              cMonth=1-cMonth;  
+          if(cMonth>Math.floor(CalendarData[m]/0x10000)+1)  
+              cMonth--;  
+      }  
+      cHour=Math.floor((TheDate.getHours()+3)/2);  
+  }  
+   
+  function   GetcDateString()  
+  {   var   tmp="";  
+      tmp+=tgString.charAt((cYear-4)%10);       //年干  
+      tmp+=dzString.charAt((cYear-4)%12);       //年支  
+      tmp+="年(";  
+      tmp+=sx.charAt((cYear-4)%12);  
+      tmp+=")   ";  
+      if(cMonth<1)  
+      {    
+        tmp+="闰";  
+          tmp+=monString.charAt(-cMonth-1);  
+      }  
+      else  
+          tmp+=monString.charAt(cMonth-1);  
+      tmp+="月";  
+      tmp+=(cDay<11)?"初":((cDay<20)?"十":((cDay<30)?"廿":"卅"));  
+      if(cDay%10!=0||cDay==10)  
+          tmp+=numString.charAt((cDay-1)%10);  
+      tmp+="    ";  
+      cDateString=tmp;  
+      return   tmp;  
+  }  
+   
+  function   GetDateString()  
+  {    
+      var   tmp="";  
+      var   t1=TheDate.getYear();  
+      if   (t1<1900)t1+=1900;  
+      tmp+=t1  
+                +"年"  
+                +(TheDate.getMonth()+1)+"月"  
+                +TheDate.getDate()+"日   "  
+              
+                +"   星期"+weekString.charAt(TheDate.getDay());    
+      DateString=tmp;  
+      return   tmp;  
+  }  
+   
+  init();  
+  e2c();  
+  GetDateString();  
+  GetcDateString();  
+  document.write(DateString,"");  
+</script></div>
+</div>
+<div class="head"></div>
+<div class="nav1">
+  <ul class="nav_ul">
+    <li><a href="#">网站首页</a></li>
+    <li><a href="#">红叶文化</a></li>
+    <li><a href="#">旅游向导</a></li>
+    <li><a href="#">红叶游记</a></li>
+    <li><a href="#">红叶风景</a></li>
+    <li><a href="#">美食之旅</a></li>
+    <li><a href="#">酒店预订</a></li>
+    <li><a href="#">联系我们</a></li>
+    <li><a href="#">在线留言</a></li>
+  </ul>
+</div>
+<div class="lb"><a href="#">站内公告：   让我们一起组队去旅游吧！　　 >> >> 组队团购去旅游还差三个人...   </a></div>
+<div class="focus">
+			<div id="gallery">
+			<img width="100%" height="400" src="images/ban1.jpg" />
+			<img width="100%" height="400" src="images/ban2.jpg"  />
+			<img width="100%" height="400" src="images/ban3.jpg"  />
+			</div>
+		</div>
+<div class="con">
+  <div class="mv"><img src="images/mv.jpg" /></div>
+  <div class="gk">
+    <div class="gk_top"><a href="#"><img src="images/more.jpg" /></a></div>
+    <div class="gk_wz">
+    <img src="images/st.jpg"/><p>桐柏红叶旅游开发有限公司于2012年10月12日在南阳工商局登记注册，总经理是殷泽清，公司注册资本100,000元 ，我公司的办公地址位于有“南都”、“帝乡”之称，古丝绸之路的源头之一南阳，河南 南阳 桐柏县黄岗镇核桃树村，我们有最好的产品和专业的销售和技术团队，在公司发展壮大的2年里，我们为客户提供最好的产品、良好的技术支持、健全的售后服务，桐柏红叶旅游开发有限公司是南阳旅行社、旅游公司行业知名企业。<a href="#">详情>></a></p></div>
+  </div>
+  <div class="dh">
+    <div class="pj"><img src="images/js.jpg" /><p>一、门票价格:</p>
+<p>每人50元 一次</p>
+<a href="#">详细信息……</a></div>
+    <div class="dh_x"><img src="images/gg1.jpg" /><img src="images/gg2.jpg" /></div>
+  </div>
+  <div class="ggt"><img src="images/22_23.jpg" /></div>
+  <div class="js">
+    <div class="js_top"><a href="#"><img src="images/more.jpg" /></a></div>
+    <div class="js_wz">
+      <div class="js_wz1"><img src="images/js.jpg" /><p>红叶风景旅游区。桐柏县级旅游中心，历史悠久，是绝佳的旅游胜地。</p></div>
+      <div class="js_wz1"><img src="images/js.jpg" /><p>红叶风景旅游区。桐柏县级旅游中心，历史悠久，是绝佳的旅游胜地。</p></div>
+      <div class="js_wz1"><img src="images/js.jpg" /><p>红叶风景旅游区。桐柏县级旅游中心，历史悠久，是绝佳的旅游胜地。</p></div>
+      <div class="js_wz1"><img src="images/js.jpg" /><p>红叶风景旅游区。桐柏县级旅游中心，历史悠久，是绝佳的旅游胜地。</p></div>
+    </div>
+</div>
+  <div class="cy">
+  <div class="cy_top"></div> 
+  <div class="cy_wz"><img src="images/cy.jpg" />
+    <ul class="cy_ul">
+      <li><a href="#">·红叶生态园豪华套餐</a></li>
+      <li><a href="#">·红叶生态园豪华套餐</a></li>
+      <li><a href="#">·红叶生态园豪华套餐</a></li>
+      <li><a href="#">·红叶生态园豪华套餐</a></li>
+    </ul>
+  </div>
+</div>
+  <div class="jd">
+  <div class="jd_top"></div> 
+  <div class="jd_wz"><img src="images/jd.jpg" />
+    <ul class="jd_ul">
+      <li><a href="#">·红叶酒店舒适快捷住处</a></li>
+      <li><a href="#">·红叶酒店舒适快捷住处</a></li>
+      <li><a href="#">·红叶酒店舒适快捷住处</a></li>
+      <li><a href="#">·红叶酒店舒适快捷住处</a></li>
+    </ul>
+  </div>
+</div>
+  <div class="clear"></div>
+  <div class="fj">
+    <div class="fj_top"><a href="#"><img src="images/more.jpg" /></a></div>
+      <div class="gd" id=www_qpsh_com>
+        <table border=0 cellpadding=0 align=left cellspace="0">
+          <tbody>
+            <tr>
+              <td height="140" valign=top id=www_qpsh_com1><table id=pic border=0 cellspacing=0 cellpadding=0>
+                <tbody>
+                  <tr>
+                    <td><div id=product_pic class="gd_bg"><a onfocus=this.blur() href="#" ><img src="images/fj.jpg" /></a></div>
+                      <center>
+                        <a href="#" class="gd_a">风景</a>
+                      </center></td>
+                    <td width=5></td>
+                    <td><div id=product_pic class="gd_bg"><a onfocus=this.blur() href="#" ><img  src="images/fj.jpg"  /></a></div>
+                      <center>
+                        <a href="#" class="gd_a">风景</a>
+                      </center></td>
+                    <td width=5></td>
+                    <td><div id=product_pic class="gd_bg"><a onfocus=this.blur() href="#" ><img  src="images/fj.jpg" /></a></div>
+                      <center>
+                        <a href="#" class="gd_a">风景</a>
+                      </center></td>
+                    <td width=5></td>
+                    <td><div id=product_pic class="gd_bg"><a onfocus=this.blur() href="#" ><img  src="images/fj.jpg" /></a></div>
+                      <center>
+                        <a href="#" class="gd_a">风景</a>
+                      </center></td>
+                    <td width=5></td>
+                    <td><div id=product_pic class="gd_bg"><a onfocus=this.blur() href="#" ><img  src="images/fj.jpg"  /></a></div>
+                      <center>
+                        <a href="#" class="gd_a">风景</a>
+                      </center></td>
+                    <td width=5></td>
+                    <td><div id=product_pic class="gd_bg"><a onfocus=this.blur() href="#" ><img  src="images/fj.jpg"  /></a></div>
+                      <center>
+                        <a href="#" class="gd_a">风景</a>
+                      </center></td>
+                    <td width=5></td>
+                    <td><div id=product_pic class="gd_bg"><a onfocus=this.blur() href="#" ><img  src="images/fj.jpg"  /></a></div>
+                      <center>
+                        <a href="#" class="gd_a">风景</a>
+                      </center></td>
+                    <td width=5></td>
+                    <td><div id=product_pic class="gd_bg"><a onfocus=this.blur() href="#" ><img  src="images/fj.jpg"  /></a></div>
+                      <center>
+                        <a href="#" class="gd_a">风景</a>
+                      </center></td>
+                    <td width=5></td>
+                    <td><div id=product_pic class="gd_bg"><a onfocus=this.blur() href="#" ><img  src="images/fj.jpg" /></a></div>
+                      <center>
+                        <a href="#" class="gd_a">风景</a>
+                      </center></td>
+                    <td width=5></td>
+                    <td><div id=product_pic class="gd_bg"><a onfocus=this.blur() href="#" ><img  src="images/fj.jpg"  /></a></div>
+                      <center>
+                        <a href="#" class="gd_a">风景</a>
+                      </center></td>
+                    <td width=5></td>
+                    <td><div id=product_pic class="gd_bg"><a onfocus=this.blur() href="#" ><img  src="images/fj.jpg" /></a></div>
+                      <center>
+                        <a href="#" class="gd_a">风景</a>
+                      </center></td>
+                    <td width=5></td>
+                    <td><div id=product_pic class="gd_bg"><a onfocus=this.blur() href="#" ><img  src="images/fj.jpg"/></a></div>
+                      <center>
+                        <a href="#" class="gd_a">风景</a>
+                      </center></td>
+                    <td width=5></td>
+                  </tr>
+                </tbody>
+              </table></td>
+              <td id=www_qpsh_com2 valign=top></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    <DIV id=teacher_works_content>
+			<TABLE border=0 cellSpacing=0 cellPadding=0 width=980>
+			  <TBODY>
+			  <TR>
+				<TD><SCRIPT>
+				  var speed=50//速度数值越大速度越慢,图片数量必须大于9才能保证浏览器兼容
+				  var www_qpsh_com2=document.getElementById("www_qpsh_com2");
+				  var www_qpsh_com1=document.getElementById("www_qpsh_com1");
+				  var www_qpsh_com=document.getElementById("www_qpsh_com");
+				  www_qpsh_com2.innerHTML=www_qpsh_com1.innerHTML
+				  function Marquee1(){
+				  if(www_qpsh_com2.offsetWidth-www_qpsh_com.scrollLeft<=0)
+				  www_qpsh_com.scrollLeft-=www_qpsh_com1.offsetWidth
+				  else{
+				  tempL=www_qpsh_com.scrollLeft;
+				  www_qpsh_com.scrollLeft++;
+				  if(tempL==www_qpsh_com.scrollLeft)www_qpsh_com.scrollLeft-=www_qpsh_com1.offsetWidth;
+				  }
+				  }
+				  var MyMar1=setInterval(Marquee1,speed)
+				  www_qpsh_com.onmouseover=function() {clearInterval(MyMar1)}
+				  www_qpsh_com.onmouseout=function() {MyMar1=setInterval(Marquee1,speed)}
+				</SCRIPT>							</TD>
+				</TR>
+			  </TBODY>
+			</TABLE>
+  </DIV>
+</div>
+</div>
+<div class="fri"><p><span>友情链接：</span><a href="#">汉都网</a> <a href="#">汉都商网</a></p></div>
+<div class="bot">
+  <div class="bot_wz"><p>桐柏红叶旅游开发有限公司 地址：河南桐柏县黄岗镇核桃树村 </p> 
+<p> 邮编：473000  联系人：殷泽清  电话：123456789   手机：123456789325   传真：0374-123456</p>
+  </div>
+</div>
+</body>
+</html>
